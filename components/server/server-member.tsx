@@ -50,6 +50,7 @@ export const ServerMember = ({
         )}
       >
         {member.profile.name}
+        
       </p>
       {icon}
     </button>

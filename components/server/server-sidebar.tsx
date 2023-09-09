@@ -7,11 +7,15 @@ import { Separator } from "@/components/ui/separator";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 
+
 import { ServerHeader } from "./server-header";
 import { ServerSearch } from "./server-search";
 import { ServerSection } from "./server-section";
 import { ServerChannel } from "./server-channel";
 import { ServerMember } from "./server-member";
+import { ServerImage } from "./server-image";
+import ServerAdmin from "./server-admin";
+import ServerMods from "./server-mods";
 
 interface ServerSidebarProps {
   serverId: string;
@@ -28,6 +32,7 @@ const roleIconMap = {
   [MemberRole.MODERATOR]: <ShieldCheck className="h-4 w-4 mr-2 text-green-600"/>,
   [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 mr-2 text-rose-500"/>
 }
+
 
 export const ServerSidebar = async ({
   serverId
@@ -64,6 +69,9 @@ export const ServerSidebar = async ({
   const videoChannels = server?.channels.filter((channel) => channel.type === ChannelType.VIDEO)
   const members = server?.members.filter((member) => member.profileId !== profile.id)
 
+  const admin = server?.members.filter((member) => member.role === "ADMIN");
+  const rep = server?.members.filter((member) => member.role === "MODERATOR");
+
   if (!server) {
     return redirect("/");
   }
@@ -72,10 +80,61 @@ export const ServerSidebar = async ({
 
   return (
     <div className="flex flex-col h-full text-primary w-full dark:bg-[#0a0a0a] bg-[#F2F3F5]">
-      <ServerHeader
-        server={server}
-        role={role}
-      />
+      <div className="mt-5">
+        <ServerImage
+          id={server.id}
+          name={server.name}
+          imageUrl={server.imageUrl}
+        />
+      </div>
+      <div className="mt-2">
+        <ServerHeader
+          server={server}
+          role={role}
+        />
+      </div>
+      <div className="px-3">
+        {!!admin?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="members"
+              role={role}
+              label="Teacher"
+              server={server}
+            />
+            <div className="space-y-[2px]">
+              {admin.map((person) => (
+                <ServerMember
+                  key={person.id}
+                  member={person}
+                  server={server}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="px-3">
+        {!!rep?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="members"
+              role={role}
+              label="Class representatives"
+              server={server}
+            />
+            <div className="space-y-[2px]">
+              {rep.map((person) => (
+                <ServerMember
+                  key={person.id}
+                  member={person}
+                  server={server}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
       <ScrollArea className="flex-1 px-3">
         <div className="mt-2">
           <ServerSearch
