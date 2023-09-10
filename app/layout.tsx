@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import { Open_Sans } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 
 import { cn } from '@/lib/utils'
@@ -11,7 +11,7 @@ import { QueryProvider } from '@/components/providers/query-provider'
 import ToasterProvider from '@/providers/toaster-provider'
 
 
-const font = Open_Sans({ subsets: ['latin'] })
+const font = Montserrat({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Classconnect',
