@@ -1,6 +1,6 @@
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { ChannelType } from "@prisma/client";
+import { ChannelType, MemberRole } from "@prisma/client";
 
 import { currentProfile } from "@/lib/current-profile";
 import { ChatHeader } from "@/components/chat/chat-header";
@@ -8,6 +8,7 @@ import { ChatInput } from "@/components/chat/chat-input";
 import { ChatMessages } from "@/components/chat/chat-messages";
 import { MediaRoom } from "@/components/media-room";
 import { db } from "@/lib/db";
+import { AssignmentUpload } from "@/components/chat/assignment-upload";
 
 interface ChannelIdPageProps {
   params: {
@@ -19,6 +20,7 @@ interface ChannelIdPageProps {
 const ChannelIdPage = async ({
   params
 }: ChannelIdPageProps) => {
+
   const profile = await currentProfile();
 
   if (!profile) {
@@ -38,9 +40,34 @@ const ChannelIdPage = async ({
     }
   });
 
+  const server = await db.server.findUnique({
+    where: {
+      id: params.serverId,
+    },
+    include: {
+      channels: {
+        orderBy: {
+          createdAt: "asc",
+        },
+      },
+      members: {
+        include: {
+          profile: true,
+        },
+        orderBy: {
+          role: "asc",
+        }
+      }
+    }
+  });
+
   if (!channel || !member) {
     redirect("/");
   }
+
+  const members = server?.members.filter((member) => member.profileId !== profile.id)
+  const admin = server?.members.find((member) => member.profileId === profile.id && member.role === MemberRole.ADMIN);
+
 
   return ( 
     <div className="bg-white dark:bg-[#161616] flex flex-col h-full">
@@ -76,6 +103,45 @@ const ChannelIdPage = async ({
           />
         </>
       )}
+      {channel.type === ChannelType.ASSIGNMENT && (
+      <>
+        <ChatMessages
+          member={member}
+          name={channel.name}
+          chatId={channel.id}
+          type="channel"
+          apiUrl="/api/messages"
+          socketUrl="/api/socket/messages"
+          socketQuery={{
+            channelId: channel.id,
+            serverId: channel.serverId,
+          }}
+          paramKey="channelId"
+          paramValue={channel.id}
+        />
+        {admin ? (
+          <ChatInput
+            name={channel.name}
+            type="channel"
+            apiUrl="/api/socket/messages"
+            query={{
+              channelId: channel.id,
+              serverId: channel.serverId,
+            }}
+          />
+        ) : (
+          <AssignmentUpload
+            name={channel.name}
+            type="channel"
+            apiUrl="/api/socket/messages"
+            query={{
+              channelId: channel.id,
+              serverId: channel.serverId,
+            }}
+          />
+        )}
+      </>
+    )}
       {channel.type === ChannelType.AUDIO && (
         <MediaRoom
           chatId={channel.id}
