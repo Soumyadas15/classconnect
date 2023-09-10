@@ -1,6 +1,6 @@
 import { ChannelType, MemberRole } from "@prisma/client";
 import { redirect } from "next/navigation";
-import { MessageCircle, Mic, ShieldAlert, ShieldCheck, Video, PenSquare } from "lucide-react";
+import { MessageCircle, Mic, ShieldAlert, ShieldCheck, Video, PenSquare, Book } from "lucide-react";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -25,8 +25,8 @@ const iconMap = {
   [ChannelType.TEXT]: <MessageCircle className="mr-2 h-4 w-4"/>,
   [ChannelType.AUDIO]: <Mic className="mr-2 h-4 w-4" />,
   [ChannelType.VIDEO]: <Video className="mr-2 h-4 w-4" />,
-  [ChannelType.ASSIGNMENT]: <PenSquare className="mr-2 h-4 w-4" />
-  
+  [ChannelType.ASSIGNMENT]: <PenSquare className="mr-2 h-4 w-4" />,
+  [ChannelType.MATERIALS]: <Book className="mr-2 h-4 w-4" />
 };
 
 const roleIconMap = {
@@ -70,6 +70,7 @@ export const ServerSidebar = async ({
   const audioChannels = server?.channels.filter((channel) => channel.type === ChannelType.AUDIO)
   const videoChannels = server?.channels.filter((channel) => channel.type === ChannelType.VIDEO)
   const assignmentChannels = server?.channels.filter((channel) => channel.type === ChannelType.ASSIGNMENT)
+  const materialChannels = server?.channels.filter((channel) => channel.type === ChannelType.MATERIALS)
 
   const members = server?.members.filter((member) => member.profileId !== profile.id)
 
@@ -162,6 +163,15 @@ export const ServerSidebar = async ({
                 }))
               },
               {
+                label: "Material Rooms",
+                type: "channel",
+                data: materialChannels?.map((channel) => ({
+                  id: channel.id,
+                  name: channel.name,
+                  icon: iconMap[channel.type],
+                }))
+              },
+              {
                 label: "Voice Rooms",
                 type: "channel",
                 data: audioChannels?.map((channel) => ({
@@ -199,7 +209,7 @@ export const ServerSidebar = async ({
               sectionType="channels"
               channelType={ChannelType.TEXT}
               role={role}
-              label="Discussion Rooms"
+              label="Discussion"
             />
             <div className="space-y-[2px]">
               {textChannels.map((channel) => (
@@ -219,10 +229,30 @@ export const ServerSidebar = async ({
               sectionType="channels"
               channelType={ChannelType.ASSIGNMENT}
               role={role}
-              label="Assignments Rooms"
+              label="Assignments"
             />
             <div className="space-y-[2px]">
               {assignmentChannels.map((channel) => (
+                <ServerChannel
+                  key={channel.id}
+                  channel={channel}
+                  role={role}
+                  server={server}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+        {!!materialChannels?.length && (
+          <div className="mb-2">
+            <ServerSection
+              sectionType="channels"
+              channelType={ChannelType.MATERIALS}
+              role={role}
+              label="Materials"
+            />
+            <div className="space-y-[2px]">
+              {materialChannels.map((channel) => (
                 <ServerChannel
                   key={channel.id}
                   channel={channel}
@@ -273,25 +303,7 @@ export const ServerSidebar = async ({
             </div>
           </div>
         )}
-        {!!members?.length && (
-          <div className="mb-2">
-            <ServerSection
-              sectionType="members"
-              role={role}
-              label="Members"
-              server={server}
-            />
-            <div className="space-y-[2px]">
-              {members.map((member) => (
-                <ServerMember
-                  key={member.id}
-                  member={member}
-                  server={server}
-                />
-              ))}
-            </div>
-          </div>
-        )}
+        
       </ScrollArea>
     </div>
   )

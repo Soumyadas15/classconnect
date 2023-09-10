@@ -1,4 +1,5 @@
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Mic, ShieldAlert, ShieldCheck, Video, PenSquare, Book } from "lucide-react";
+import { ChannelType } from "@prisma/client";
 
 interface ChatWelcomeProps {
   name: string;
@@ -9,6 +10,8 @@ export const ChatWelcome = ({
   name,
   type
 }: ChatWelcomeProps) => {
+  
+  
   return (
     <div className="space-y-2 px-4 mb-4">
       {type === "channel" && (
@@ -17,7 +20,7 @@ export const ChatWelcome = ({
         </div>
       )}
       <p className="text-xl md:text-3xl font-bold">
-        {type === "channel" ? "Welcome to " : ""}{name}
+        {type === "channel" ? "" : ""}{name}
       </p>
       <p className="text-zinc-600 dark:text-zinc-400 text-sm">
         {type === "channel"

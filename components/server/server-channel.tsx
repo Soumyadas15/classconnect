@@ -6,7 +6,7 @@ import {
   MemberRole,
   Server
 } from "@prisma/client";
-import { Edit, MessageCircle, Lock, Mic, Trash, Video, PenSquare } from "lucide-react";
+import { Edit, MessageCircle, Lock, Mic, Trash, Video, PenSquare, Book } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -25,6 +25,8 @@ const iconMap = {
   [ChannelType.AUDIO]: Mic,
   [ChannelType.VIDEO]: Video,
   [ChannelType.ASSIGNMENT]: PenSquare,
+  [ChannelType.MATERIALS]: Book,
+  
 }
 
 export const ServerChannel = ({

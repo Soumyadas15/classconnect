@@ -9,6 +9,7 @@ import { ChatMessages } from "@/components/chat/chat-messages";
 import { MediaRoom } from "@/components/media-room";
 import { db } from "@/lib/db";
 import { AssignmentUpload } from "@/components/chat/assignment-upload";
+import { AddMaterials } from "@/components/chat/chat-materials";
 
 interface ChannelIdPageProps {
   params: {
@@ -65,7 +66,8 @@ const ChannelIdPage = async ({
     redirect("/");
   }
 
-  const members = server?.members.filter((member) => member.profileId !== profile.id)
+  const members = server?.members.filter((member) => member.profileId !== profile.id);
+  const adminText = server?.members.filter((member) => member.role === MemberRole.ADMIN);
   const admin = server?.members.find((member) => member.profileId === profile.id && member.role === MemberRole.ADMIN);
 
 
@@ -104,44 +106,83 @@ const ChannelIdPage = async ({
         </>
       )}
       {channel.type === ChannelType.ASSIGNMENT && (
-      <>
-        <ChatMessages
-          member={member}
-          name={channel.name}
-          chatId={channel.id}
-          type="channel"
-          apiUrl="/api/messages"
-          socketUrl="/api/socket/messages"
-          socketQuery={{
-            channelId: channel.id,
-            serverId: channel.serverId,
-          }}
-          paramKey="channelId"
-          paramValue={channel.id}
-        />
-        {admin ? (
-          <ChatInput
+        <>
+          <ChatMessages
+            member={member}
             name={channel.name}
+            chatId={channel.id}
             type="channel"
-            apiUrl="/api/socket/messages"
-            query={{
+            apiUrl="/api/messages"
+            socketUrl="/api/socket/messages"
+            socketQuery={{
               channelId: channel.id,
               serverId: channel.serverId,
             }}
+            paramKey="channelId"
+            paramValue={channel.id}
           />
-        ) : (
-          <AssignmentUpload
+          {admin ? (
+            <ChatInput
+              name={channel.name}
+              type="channel"
+              apiUrl="/api/socket/messages"
+              query={{
+                channelId: channel.id,
+                serverId: channel.serverId,
+              }}
+            />
+          ) : (
+            <AssignmentUpload
+              name={channel.name}
+              type="channel"
+              apiUrl="/api/socket/messages"
+              query={{
+                channelId: channel.id,
+                serverId: channel.serverId,
+              }}
+            />
+          )}
+        </>
+      )}
+      {channel.type === ChannelType.MATERIALS && (
+        <>
+          <ChatMessages
+            member={member}
             name={channel.name}
+            chatId={channel.id}
             type="channel"
-            apiUrl="/api/socket/messages"
-            query={{
+            apiUrl="/api/messages"
+            socketUrl="/api/socket/messages"
+            socketQuery={{
               channelId: channel.id,
               serverId: channel.serverId,
             }}
+            paramKey="channelId"
+            paramValue={channel.id}
           />
-        )}
-      </>
-    )}
+          {admin ? (
+            <AddMaterials
+              name={channel.name}
+              type="channel"
+              apiUrl="/api/socket/messages"
+              query={{
+                channelId: channel.id,
+                serverId: channel.serverId,
+              }}
+            />
+          ) : (
+            <ChatInput
+              name={channel.name}
+              type="channel"
+              apiUrl="/api/socket/messages"
+              query={{
+                channelId: channel.id,
+                serverId: channel.serverId,
+              }}
+            />
+          )}
+        </>
+      )}
       {channel.type === ChannelType.AUDIO && (
         <MediaRoom
           chatId={channel.id}

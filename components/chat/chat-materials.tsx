@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
 import { EmojiPicker } from "@/components/emoji-picker";
 
-interface AssignmentUploadProps {
+interface AddMaterialsProps {
   apiUrl: string;
   query: Record<string, any>;
   name: string;
@@ -29,12 +29,12 @@ const formSchema = z.object({
   content: z.string().min(1),
 });
 
-export const AssignmentUpload = ({
+export const AddMaterials = ({
   apiUrl,
   query,
   name,
   type,
-}: AssignmentUploadProps) => {
+}: AddMaterialsProps) => {
   const { onOpen } = useModal();
   const router = useRouter();
 
@@ -81,12 +81,9 @@ export const AssignmentUpload = ({
                   >
                     <Plus className="text-white dark:text-[#161616]" />
                   </button>
-                  <div
-                    
-                    className="px-14 py-6 rounded-full  dark:border-white border-black border-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
-                    
-                  >Upload assignment</div>
-                  
+                  <div className="px-14 py-6 rounded-full  dark:border-white border-black border-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200">
+                    Upload Material
+                  </div>
                 </div>
               </FormControl>
             </FormItem>

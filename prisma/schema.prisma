@@ -75,6 +75,7 @@ enum ChannelType {
   AUDIO
   VIDEO
   ASSIGNMENT
+  MATERIALS
 }
 
 model Channel {
