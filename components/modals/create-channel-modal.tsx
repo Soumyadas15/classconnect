@@ -102,7 +102,15 @@ export const CreateChannelModal = () => {
   return (
     
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-white text-black p-0 overflow-hidden">
+      <DialogContent className="
+            bg-white
+            dark:bg-black 
+            dark:text-white 
+            text-black 
+            p-0 
+            overflow-hidden 
+            border-none"
+       >
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
             Create Room
@@ -117,14 +125,29 @@ export const CreateChannelModal = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel
-                      className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
+                      className="
+                      uppercase 
+                      text-xs 
+                      font-bold 
+                       text-zinc-500 
+                       dark:text-[#d8d8d8]
+                      "
                     >
                       Room name
                     </FormLabel>
                     <FormControl>
                       <Input
                         disabled={isLoading}
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                        className="
+                          bg-zinc-300/50 
+                          dark:bg-[#151515]
+                          border-0 
+                          focus-visible:ring-0 
+                          text-black 
+                          dark:text-zinc-400
+                          focus-visible:ring-offset-0
+                        "
+
                         placeholder="Enter room name"
                         {...field}
                       />
@@ -146,7 +169,16 @@ export const CreateChannelModal = () => {
                     >
                       <FormControl>
                         <SelectTrigger
-                          className="bg-zinc-300/50 border-0 focus:ring-0 text-black ring-offset-0 focus:ring-offset-0 capitalize outline-none"
+                          className="
+                            bg-zinc-300/50 
+                            dark:bg-[#151515]
+                            border-0 focus:ring-0 
+                            text-black 
+                            dark:text-zinc-400
+                            ring-offset-0 
+                            focus:ring-offset-0 
+                            capitalize 
+                            outline-none"
                         >
                           <SelectValue placeholder="Select a channel type" />
                         </SelectTrigger>
@@ -168,7 +200,12 @@ export const CreateChannelModal = () => {
                 )}
               />
             </div>
-            <DialogFooter className="bg-gray-100 px-6 py-4">
+            <DialogFooter className="
+                          bg-gray-100 
+                          dark:bg-black
+                          px-6 
+                          py-4"
+            >
               <Button variant="primary" disabled={isLoading}>
                 Create
               </Button>
