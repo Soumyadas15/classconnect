@@ -8,6 +8,7 @@ import {
 } from "@prisma/client";
 import { Edit, MessageCircle, Lock, Mic, Trash, Video, PenSquare } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+import toast, { Toaster } from 'react-hot-toast';
 
 import { cn } from "@/lib/utils";
 import { ActionTooltip } from "@/components/action-tooltip";

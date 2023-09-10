@@ -6,6 +6,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ChannelType } from "@prisma/client";
+import { toast } from 'react-hot-toast';
 
 import {
   Dialog,
@@ -82,12 +83,14 @@ export const CreateChannelModal = () => {
         }
       });
       await axios.post(url, values);
-
       form.reset();
+      toast.success('Room created');
       router.refresh();
+      
       onClose();
     } catch (error) {
       console.log(error);
+      toast.error("Could not create room")
     }
   }
 
@@ -97,6 +100,7 @@ export const CreateChannelModal = () => {
   }
 
   return (
+    
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">

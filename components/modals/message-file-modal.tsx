@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
+import { toast } from "react-hot-toast";
 
 const formSchema = z.object({
   fileUrl: z.string().min(1, {
@@ -65,10 +66,12 @@ export const MessageFileModal = () => {
       });
 
       form.reset();
+      toast.success("File uploaded successfully");
       router.refresh();
       handleClose();
     } catch (error) {
       console.log(error);
+      toast.success("Something went wrong");
     }
   }
 

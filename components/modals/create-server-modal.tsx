@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
+import { toast } from "react-hot-toast";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -57,10 +58,12 @@ export const CreateServerModal = () => {
       await axios.post("/api/servers", values);
 
       form.reset();
+      toast.success("Classroom created successfully")
       router.refresh();
       onClose();
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong");
     }
   }
 

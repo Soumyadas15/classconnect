@@ -9,6 +9,7 @@ import { db } from "@/lib/db";
 
 import { NavigationAction } from "./navigation-action";
 import { NavigationItem } from "./navigation-item";
+import NavigationLogo from "./navigation-logo";
 
 export const NavigationSidebar = async () => {
   const profile = await currentProfile();
@@ -32,6 +33,10 @@ export const NavigationSidebar = async () => {
       className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#0a0a0a]
       bg-[#F2F3F5] py-3"
     >
+      <NavigationLogo/>
+      <Separator
+        className="h-[2px] bg-zinc-200 dark:bg-zinc-700 rounded-md w-10 mx-auto"
+      />
       <NavigationAction />
       <Separator
         className="h-[2px] bg-zinc-200 dark:bg-zinc-700 rounded-md w-10 mx-auto"

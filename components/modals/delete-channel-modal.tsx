@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { useModal } from "@/hooks/use-modal-store";
 import { Button } from "@/components/ui/button";
+import { toast } from 'react-hot-toast';
 
 export const DeleteChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
@@ -38,10 +39,12 @@ export const DeleteChannelModal = () => {
       await axios.delete(url);
 
       onClose();
+      toast.success("Room deleted")
       router.refresh();
       router.push(`/servers/${server?.id}`);
     } catch (error) {
       console.log(error);
+      toast.error("Something went wrong")
     } finally {
       setIsLoading(false);
     }
