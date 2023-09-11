@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
+import { STRING_LITERAL_DROP_BUNDLE } from "next/dist/shared/lib/constants";
 
 interface ChatItemProps {
   id: string;
@@ -48,6 +49,17 @@ const roleIconMap = {
 const formSchema = z.object({
   content: z.string().min(1),
 });
+
+function getName(input: string): string{
+  const getFirst = input.indexOf('_');
+  if (getFirst !== -1){
+    return input.substring(getFirst + 1);
+  }
+  else{
+    return input;
+  }
+
+}
 
 export const ChatItem = ({
   id,
@@ -126,6 +138,8 @@ export const ChatItem = ({
   const canEditMessage = !deleted && isOwner && !fileUrl;
   const isPDF = fileType === "pdf" && fileUrl;
   const isImage = !isPDF && fileUrl;
+  const fileName = isPDF ? getName(fileUrl) : null;
+  const decodedFileName = fileName ? decodeURIComponent(fileName) : '';
 
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
@@ -171,7 +185,7 @@ export const ChatItem = ({
                 rel="noopener noreferrer"
                 className="ml-2 text-sm text-green-600 dark:text-green-400 hover:underline"
               >
-                PDF File
+                {decodedFileName}
               </a>
             </div>
           )}
