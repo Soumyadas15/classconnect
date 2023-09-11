@@ -6,10 +6,11 @@ import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Member, MemberRole, Profile } from "@prisma/client";
-import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
+import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash, Download } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
+
 
 import { UserAvatar } from "@/components/user-avatar";
 import { ActionTooltip } from "@/components/action-tooltip";
@@ -24,6 +25,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
 import { STRING_LITERAL_DROP_BUNDLE } from "next/dist/shared/lib/constants";
+import { response } from "express";
+import toast from "react-hot-toast";
 
 interface ChatItemProps {
   id: string;
@@ -141,6 +144,32 @@ export const ChatItem = ({
   const fileName = isPDF ? getName(fileUrl) : null;
   const decodedFileName = fileName ? decodeURIComponent(fileName) : '';
 
+  const handleDownload = () => {
+    if (!fileUrl){
+      return;
+    }
+
+    fetch(fileUrl)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const blobUrl = URL.createObjectURL(blob);
+
+          const a = document.createElement('a');
+          a.href = blobUrl;
+          a.download = decodedFileName || 'file';
+          a.style.display = 'none';
+
+          document.body.appendChild(a);
+          a.click();
+
+          document.body.appendChild(a);
+          URL.revokeObjectURL(blobUrl);
+        })
+        .catch((error) => {
+          toast.error("Error downloading file: ", error);
+        });
+  };
+
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
       <div className="group flex gap-x-2 items-start w-full">
@@ -187,6 +216,7 @@ export const ChatItem = ({
               >
                 {decodedFileName}
               </a>
+              <Download className="ml-5 h-6 w-6 hover:stroke-black/60 cursor-pointer transition" onClick={handleDownload} />
             </div>
           )}
           {!fileUrl && !isEditing && (
