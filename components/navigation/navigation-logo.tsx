@@ -10,7 +10,7 @@ const NavigationLogo = () => {
         <div>
             <Image
                 onClick={() => router.push('/')}
-                src={'/2x/Classconnect.png'}
+                src={'/Classconnect.png'}
                 alt = 'logo'
                 width={48} 
                 height={48} 

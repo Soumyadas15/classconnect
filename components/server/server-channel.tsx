@@ -53,17 +53,17 @@ export const ServerChannel = ({
     <button
       onClick={onClick}
       className={cn(
-        "group px-2 py-2 rounded-full flex items-center gap-x-2 w-full hover:bg-green-500/20 dark:hover:bg-zinc-700/50 transition mb-1",
-        params?.channelId === channel.id && "bg-green-600 dark:bg-green-500"
+        "group px-2 py-2 rounded-full flex items-center gap-x-2 w-full hover:bg-neutral-500/20 dark:hover:bg-zinc-700/50 transition mb-1",
+        params?.channelId === channel.id && "bg-neutral-800 dark:bg-neutral-200"
       )}
     >
       <Icon className={cn(
         "line-clamp-1 font-semibold text-[5px] text-zinc-500 group-hover:text-zinc-600 dark:text-zinc-400 dark:group-hover:text-zinc-300 transition",
-        params?.channelId === channel.id && "text-white dark:text-zinc-200 dark:group-hover:text-white"
+        params?.channelId === channel.id && "text-white dark:text-neutral-800 dark:group-hover:text-white"
       )}/>
       <p className={cn(
         "line-clamp-1 font-semibold text-sm text-zinc-500 group-hover:text-zinc-600 dark:text-zinc-400 dark:group-hover:text-zinc-300 transition",
-        params?.channelId === channel.id && "text-white dark:text-zinc-200 dark:group-hover:text-white"
+        params?.channelId === channel.id && "text-white dark:text-neutral-800 dark:group-hover:text-white"
       )}>
         {channel.name}
       </p>
