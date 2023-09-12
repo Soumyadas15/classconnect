@@ -72,20 +72,39 @@ export const AssignmentUpload = ({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className="relative p-4 pb-6 items-center justify-center">
+                <div className="relative p-4 pb-6 group items-center justify-center">
                   <button
                     type="button"
                     onClick={() => onOpen("messageFile", { apiUrl, query })}
-                    className="absolute top-10
-                     left-8 h-[30px] w-[30px] bg-zinc-500 dark:bg-zinc-400 hover:bg-zinc-600 dark:hover:bg-zinc-300 transition rounded-full p-1 flex items-center justify-center"
+                    className="absolute top-[30px]
+                     left-8 h-[30px] w-[30px] bg-black-500 dark:bg-white-400 group-hover:bg-neutral-800 dark:group-hover:bg-neutral-300 transition rounded-full p-1 flex items-center justify-center"
                   >
                     <Plus className="text-white dark:text-[#161616]" />
                   </button>
                   <div
+                    onClick={() => onOpen("messageFile", { apiUrl, query })}
+                    className="
+                      px-14 
+                      py-4
+                      w-[280px]
+                      cursor-pointer
+                      rounded-full
+                      
+                      bg-black 
+                      group-hover:bg-neutral-800
+                      text-white
+
+                      dark:text-black
+                      dark:bg-white
+                      dark:group-hover:bg-neutral-300
+
+                      transition
+                    "
                     
-                    className="px-14 py-6 rounded-full  dark:border-white border-black border-2 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
+                  >
+                    Submit assignment
                     
-                  >Upload assignment</div>
+                  </div>
                   
                 </div>
               </FormControl>

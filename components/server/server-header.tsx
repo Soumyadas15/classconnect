@@ -49,7 +49,7 @@ export const ServerHeader = ({
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]"
+        className="w-56 text-xs rounded-lg font-medium text-black dark:text-neutral-400 space-y-[2px]"
       >
         {isModerator && (
           <DropdownMenuItem

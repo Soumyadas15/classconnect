@@ -10,6 +10,7 @@ import { MediaRoom } from "@/components/media-room";
 import { db } from "@/lib/db";
 import { AssignmentUpload } from "@/components/chat/assignment-upload";
 import { AddMaterials } from "@/components/chat/chat-materials";
+import { MaterialInput } from "@/components/chat/material-input";
 
 interface ChannelIdPageProps {
   params: {
@@ -171,7 +172,7 @@ const ChannelIdPage = async ({
               }}
             />
           ) : (
-            <ChatInput
+            <MaterialInput
               name={channel.name}
               type="channel"
               apiUrl="/api/socket/messages"

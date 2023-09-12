@@ -142,7 +142,9 @@ export const ChatItem = ({
   const isPDF = fileType === "pdf" && fileUrl;
   const isImage = !isPDF && fileUrl;
   const fileName = isPDF ? getName(fileUrl) : null;
+  const imageName = isImage ? getName(fileUrl) : null;
   const decodedFileName = fileName ? decodeURIComponent(fileName) : '';
+  const decodedImageName = imageName ? decodeURIComponent(imageName) : '';
 
   const handleDownload = () => {
     if (!fileUrl){
@@ -170,6 +172,34 @@ export const ChatItem = ({
         });
   };
 
+  const handleImageDownload = () => {
+    if (!fileUrl){
+      return;
+    }
+
+    fetch(fileUrl)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const blobUrl = URL.createObjectURL(blob);
+
+          const a = document.createElement('a');
+          a.href = blobUrl;
+          a.download = decodedImageName || 'Image';
+          a.style.display = 'none';
+
+          document.body.appendChild(a);
+          a.click();
+
+          document.body.appendChild(a);
+          URL.revokeObjectURL(blobUrl);
+        })
+        .catch((error) => {
+          toast.error("Error downloading file: ", error);
+        });
+  };
+
+  
+
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
       <div className="group flex gap-x-2 items-start w-full">
@@ -191,19 +221,24 @@ export const ChatItem = ({
             </span>
           </div>
           {isImage && (
+            <div className="flex items-center">
             <a 
               href={fileUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="relative aspect-square rounded-md mt-2 overflow-hidden border flex items-center bg-secondary h-48 w-48"
             >
-              <Image
-                src={fileUrl}
-                alt={content}
-                fill
-                className="object-cover"
-              />
+              <div>
+                <Image
+                  src={fileUrl}
+                  alt={content}
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </a>
+            <Download className="ml-5 h-6 w-6 hover:stroke-black/60 dark:hover:stroke-white/60 cursor-pointer transition" onClick={handleImageDownload} />
+            </div>
           )}
           {isPDF && (
             <div className="relative flex items-center p-2 mt-2 rounded-md bg-background/10">
@@ -216,7 +251,7 @@ export const ChatItem = ({
               >
                 {decodedFileName}
               </a>
-              <Download className="ml-5 h-6 w-6 hover:stroke-black/60 cursor-pointer transition" onClick={handleDownload} />
+              <Download className="ml-5 h-6 w-6 dark:hover:stroke-white/60 hover:stroke-black/60 cursor-pointer transition" onClick={handleDownload} />
             </div>
           )}
           {!fileUrl && !isEditing && (
